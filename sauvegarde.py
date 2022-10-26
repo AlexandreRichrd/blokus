@@ -6,7 +6,7 @@ import time
 import dict_pieces
 
 
-def sauvegarde(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
+def save(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
     """ Entrée : plateau, une matrice 22x22 ; les dictionnaires des joueurs
     But : Ecriture d'un fichier 'blokus_date_heure.txt' contenant le plateau puis les cles des pièces restantes
      des joueurs
@@ -40,17 +40,19 @@ def sauvegarde(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
     return
 
 
-def lecture_sauvegarde(nom_fichier):
+def read_save(nom_fichier):
     """
     Entrée : nom_fichier, str
     But : lire le fichier, en déduire le joueur qui doit jouer, les dictionnaires des joueurs, le plateau
-    Sortie : une liste [plateau, dicoj1, dicoj2, dicoj3, dicoj4, joueur_a_jouer]
+    Sortie : une liste [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
     Créateur : Romain
     """
 
     fichier = open(nom_fichier, 'r')
     plateau = []
     lignes = fichier.readlines()
+
+    # Déduction du tableau
     for k in range(22):
         ligne = []
         for x in lignes[k]:
@@ -58,21 +60,17 @@ def lecture_sauvegarde(nom_fichier):
                 ligne.append(x)
         plateau.append(ligne)
 
-    dicoj1 , dicoj2, dicoj3, dicoj4 = {}, {}, {}, {}
+    # Déduction des dictionnaires des joueurs
+    dicoj1, dicoj2, dicoj3, dicoj4 = {}, {}, {}, {}
 
-    print(len(lignes))
-    for cle in lignes[22].split(' '):
-        if cle != '\n':
-            dicoj1[int(cle)] = dict_pieces.dict.get(int(cle))
-    for cle in lignes[23].split(' '):
-        if cle != '\n':
-            dicoj2[int(cle)] = dict_pieces.dict.get(int(cle))
-    for cle in lignes[24].split(' '):
-        if cle != '\n':
-            dicoj3[int(cle)] = dict_pieces.dict.get(int(cle))
-    for cle in lignes[25].split(' '):
-        if cle != '\n':
-            dicoj4[int(cle)] = dict_pieces.dict.get(int(cle))
-    
-    joueur_a_jouer = min([(1, len(dicoj1)), (2, len(dicoj2)), (3, len(dicoj3)), (4, len(dicoj4))], key = lambda t: t[1])[0]
-    return [plateau, dicoj1, dicoj2, dicoj3, dicoj4, joueur_a_jouer]
+    for (i, dico) in [(22, dicoj1), (23, dicoj2), (24, dicoj3), (25, dicoj4)]:
+        for cle in lignes[i].split(' '):
+            if cle != '\n':
+                dico[int(cle)] = dict_pieces.dict.get(int(cle))
+
+    fichier.close()
+
+    # Calcul du joueur qui doit jouer
+    j_suivant = max([(1, len(dicoj1)), (2, len(dicoj2)), (3, len(dicoj3)), (4, len(dicoj4))], key=lambda t: t[1])[0]
+
+    return [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
