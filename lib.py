@@ -22,7 +22,8 @@ def generate_config(dict1):
       
       m = np.flip(dict1[i], 1)
       list_combi.append(m)
-      print(list_combi)
+      print('m flip: ', m)
+      print('list: ', list_combi)
       dict2[i] = (dict1[i], (set(list_combi))) # ne pas oublier la matrice de base
     elif len(dict1[i]) == 1:
       dict2[i] = (dict1[i], dict1[i])
