@@ -41,4 +41,4 @@ for k in range(1, 5):
     print(liste_save[k])
 print("Joueur qui doit commencer à jouer : ", liste_save[5])
 
-# changement antonin
+# changement antonin modif branche romain
