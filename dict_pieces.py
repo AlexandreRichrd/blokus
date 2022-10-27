@@ -24,3 +24,11 @@ dict = {
 }
 
 
+
+'''
+dict = {
+  # id: (piece de base, [tab config])
+}
+'''
+
+dict_config = {}
