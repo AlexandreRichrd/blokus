@@ -100,7 +100,6 @@ def peut_jouer(plateau, dico_joueurs, id_joueur):
             if plateau[x][y] == 0:
 
                 for piece in pieces_du_joueur:  # Code à compléter pour tester toutes les configurations d'une pièce
-                    if test_coup_legal(plateau, piece, (x, y)):
+                    if test_coup_legal(plateau, piece, (x, y), id_joueur):
                         return True
     return False
-
