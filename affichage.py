@@ -25,24 +25,18 @@ def afficher_plateau_couleur(plateau):
         affichage = ''
         for x in ligne:
             if x == '1':
-                affichage = affichage + (Back.BLUE + '1')
-                affichage = affichage + (Back.BLUE + ' ')
+                affichage = affichage + (Back.BLUE + ' 1 ')
             if x == '2':
-                affichage = affichage + (Back.RED + '2')
-                affichage = affichage + (Back.RED + ' ')
+                affichage = affichage + (Back.RED + ' 2 ')
             if x == '3':
-                affichage = affichage + (Back.GREEN + '3')
-                affichage = affichage + (Back.GREEN + ' ')
+                affichage = affichage + (Back.GREEN + ' 3 ')
             if x == '4':
-                affichage = affichage + (Back.YELLOW + '4')
-                affichage = affichage + (Back.YELLOW + ' ')
+                affichage = affichage + (Back.YELLOW + ' 4 ')
             if x == ' ':
-                affichage = affichage + (Back.WHITE + " ")
-                affichage = affichage + (Back.WHITE + " ")
-            if x == '':
-                affichage = affichage + (Back.BLACK + '')
-                affichage = affichage + (Back.BLACK + '*')
-        print(affichage)
+                affichage = affichage + (Back.WHITE + "   ")
+            if x == '*':
+                affichage = affichage + (Back.BLACK + Fore.WHITE + ' * ')
+        print(affichage + Back.RESET + Fore.RESET)
     print(Back.RESET)
     print(Fore.RESET)
     return
