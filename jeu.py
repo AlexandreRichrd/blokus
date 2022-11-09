@@ -78,3 +78,7 @@ def test_coup_legal(plateau, piece, coord, id_joueur):
         return True
 
     return False
+
+
+
+
