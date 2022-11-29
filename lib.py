@@ -13,7 +13,7 @@ def generate_config(dict1):
   for i in range(1, len(dict1)+1):
     # print('test: ', i)
     # print(len(dict1[i]))
-    if((i != 4)):
+    if((1 == 1)):
       if len(dict1[i]) > 1:
         list_combi = []
         list_combi2 = []
@@ -34,12 +34,35 @@ def generate_config(dict1):
         # print('dict2[', i, ']: ', dict2[i])
       elif len(dict1[i]) == 1:
         dict2[i] = (dict1[i], dict1[i])
-    elif i == 4:
-      dict2[i] = (dict1[i], [[['x', 'x'], ['x', '']], [['x', ''], ['x', 'x']], [['x', 'x'], ['', 'x']], [['', 'x'], ['x', 'x']]]) 
+    # elif i == 4:
+    #   dict2[i] = (dict1[i], [[['x', 'x'], ['x', '']], [['x', ''], ['x', 'x']], [['x', 'x'], ['', 'x']], [['', 'x'], ['x', 'x']]]) 
     # elif i == 9:
     #   print('test')
     #   dict2[i] = (dict1[i], [[['x', 'x', ''], ['', 'x', 'x']], [['', '', 'x'], ['x', 'x', 'x'], ['x', '', '']], [['', 'x', 'x'], ['x', 'x', '']],[['x', '', ''], ['x', 'x', 'x'], ['', '', 'x']]])
   return dict2
+
+def generate_config_piece(piece):
+  '''
+  Entree: matrice de la piece de base
+  But: Generer les config de la piece
+  Sortie: Liste avec les configs de la piece
+  '''
+  list_configs = []
+  list_configs2 = []
+  
+  for i in range(4):
+    m = rotate_matrix(piece, i+1)
+    list_configs.append(m)
+  m = np.flip(piece, 1)
+  list_configs.append(m)
+  for i in range(4):
+    m = rotate_matrix(m, i+1)
+    list_configs.append(m)
+  for k in range(len(list_configs)):
+      list_configs2.append(list_configs[k].tolist())
+  list_configs2.append(piece)
+
+  return remove_double(list_configs2)
 
 
 def remove_double(list):
@@ -79,16 +102,25 @@ dict_pieces.dict_config = generate_config(dict_pieces.dict)
 afficher_matrix(dict_pieces.dict_config[2][1][0])
 
 print('affichage')
-for i in range(1, len(dict_pieces.dict_config)+1):
-  print('------------------')
-  print('Pièce ', i)
-  print('------------------')
-  print('config de base: ')
-  afficher_matrix(dict_pieces.dict_config[i][0])
-  for j in range(len(dict_pieces.dict_config[i][1])):
-    print('Config ', j)
-    afficher_matrix(dict_pieces.dict_config[i][1][j])
-    print('')
+# for i in range(1, len(dict_pieces.dict_config)+1):
+#   print('------------------')
+#   print('Pièce ', i)
+#   print('------------------')
+#   print('config de base: ')
+#   afficher_matrix(dict_pieces.dict_config[i][0])
+#   for j in range(len(dict_pieces.dict_config[i][1])):
+#     print('Config ', j)
+#     afficher_matrix(dict_pieces.dict_config[i][1][j])
+#     print('')
+# k = 4
+# for j in range(len(dict_pieces.dict_config[k][1])):
+#     print('Config ', k)
+#     afficher_matrix(dict_pieces.dict_config[k][1][j])
+#     print('')
 
-
-print(dict_pieces.dict_config[9][0])
+while(True):
+  j = int(input('Piece: '))
+  piece = generate_config_piece(dict_pieces.dict[j])
+  for i in range (len(piece)):
+    print('Config ', i)
+    afficher_matrix(piece[i])
