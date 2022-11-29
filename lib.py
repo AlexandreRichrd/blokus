@@ -91,4 +91,4 @@ for i in range(1, len(dict_pieces.dict_config)+1):
     print('')
 
 
-print(dict_pieces.dict_config[9][0])
+print(dict_pieces.dict_config[19][0])
