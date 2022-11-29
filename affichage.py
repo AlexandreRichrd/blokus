@@ -12,14 +12,15 @@ def afficher_plateau(plateau):
     """
     for ligne in plateau:
         print(ligne)
-    return
+
 
 def afficher_piece(piece, joueur):
-    '''
-    Entree: piece: matrice, joueur: int
-    But: Afficher la piece en couleur dans la console
-    Sortie: None
-    '''
+    """
+    Entree : piece: matrice, joueur: int
+    But : Afficher la piece en couleur dans la console
+    Sortie : None
+    Créateur : Alexandre
+    """
     affichage = ''
     for i in range(len(piece)):
         for j in range(len(piece[i])):
@@ -38,31 +39,25 @@ def afficher_piece(piece, joueur):
     print(affichage)
 
 
-
-
 def afficher_plateau_couleur(plateau):
     """
     Entrée : plateau, une matrice 22x22
     But : Afficher le plateau en couleur dans la console
     Sortie : None
-    Créateur : Valentin
+    Créateurs : Valentin et Romain
     """
     affichage = ''
     for ligne in plateau:
         for x in ligne:
             if x == '1':
-                affichage = affichage + (Back.BLUE + ' 1  ' + Back.RESET)
-            if x == '2':
-                affichage = affichage + (Back.RED + ' 2  ' + Back.RESET)
-            if x == '3':
-                affichage = affichage + (Back.GREEN + ' 3  ' + Back.RESET)
-            if x == '4':
-                affichage = affichage + (Back.YELLOW + ' 4  ' + Back.RESET)
-            if x == ' ':
-                affichage = affichage + (Back.WHITE + '    ' + Back.RESET)
-        affichage = affichage + '\n'
+                affichage += Back.BLUE + ' 1  ' + Back.RESET
+            elif x == '2':
+                affichage += Back.RED + ' 2  ' + Back.RESET
+            elif x == '3':
+                affichage += Back.GREEN + ' 3  ' + Back.RESET
+            elif x == '4':
+                affichage += Back.YELLOW + ' 4  ' + Back.RESET
+            elif x == ' ':
+                affichage += Back.WHITE + '    ' + Back.RESET
+        affichage += '\n'
     print(affichage + Back.RESET)
-    return None
-
-
-afficher_piece(dict[4], 1)
