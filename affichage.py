@@ -21,22 +21,19 @@ def afficher_plateau_couleur(plateau):
     Sortie : None
     Créateur : Valentin
     """
+    affichage = ''
     for ligne in plateau:
-        affichage = ''
         for x in ligne:
             if x == '1':
-                affichage = affichage + (Back.BLUE + ' 1 ')
+                affichage = affichage + (Back.BLUE + ' 2  ' + Back.RESET)
             if x == '2':
-                affichage = affichage + (Back.RED + ' 2 ')
+                affichage = affichage + (Back.RED + ' 2  ' + Back.RESET)
             if x == '3':
-                affichage = affichage + (Back.GREEN + ' 3 ')
+                affichage = affichage + (Back.GREEN + ' 3  ' + Back.RESET)
             if x == '4':
-                affichage = affichage + (Back.YELLOW + ' 4 ')
+                affichage = affichage + (Back.YELLOW + ' 4  ' + Back.RESET)
             if x == ' ':
-                affichage = affichage + (Back.WHITE + "   ")
-            if x == '*':
-                affichage = affichage + (Back.BLACK + Fore.WHITE + ' * ')
-        print(affichage + Back.RESET + Fore.RESET)
-    print(Back.RESET)
-    print(Fore.RESET)
-    return
+                affichage = affichage + (Back.WHITE + '    ' + Back.RESET)
+        affichage = affichage + '\n'
+    print(affichage + Back.RESET)
+    return None
