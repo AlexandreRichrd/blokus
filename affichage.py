@@ -1,6 +1,5 @@
 # Gestion de l'affichage console
 from colorama import Back, Fore
-from dict_pieces import dict
 
 
 def afficher_plateau(plateau):
@@ -46,7 +45,7 @@ def afficher_plateau_couleur(plateau):
     Sortie : None
     Créateurs : Valentin et Romain
     """
-    affichage = ''
+    affichage = Fore.BLACK
     for ligne in plateau:
         for x in ligne:
             if x == '1':
@@ -60,4 +59,4 @@ def afficher_plateau_couleur(plateau):
             elif x == ' ':
                 affichage += Back.WHITE + '    ' + Back.RESET
         affichage += '\n'
-    print(affichage + Back.RESET)
+    print(affichage + Back.RESET + Fore.RESET)
