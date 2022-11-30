@@ -1,5 +1,12 @@
 # Fonctions appelées dans la boucle principale du jeu
 
+# /!\ A FINIR /!\
+# Compléter la fonction peut joueur pour tester toutes les configurations d'une pièce et non seulement la
+# configuration initiale
+
+
+import dict_pieces
+
 
 def placer_piece(plateau, piece, coord, id_joueur):
     """
@@ -80,5 +87,19 @@ def test_coup_legal(plateau, piece, coord, id_joueur):
     return False
 
 
+def peut_jouer(plateau, dico_joueurs, id_joueur):
+    """
+    Entrée : plateau (matrice 22x22), dico_joueurs (construit comme {1:[1,2,3...], 2:[,]...}), id_joueur : int [1:4]
+    But : Savoir si un joueur peut jouer en parcourant toutes les cases vides du plateau et en essayant les pièces
+    Sortie : Un booléen
+    Créateur : Romain
+    """
+    pieces_du_joueur = dico_joueurs.get(id_joueur)
+    for x in range(1, 22):  # Parcours des cases et vérifie si la case est vide
+        for y in range(1, 22):
+            if plateau[x][y] == 0:
 
-
+                for piece in pieces_du_joueur:  # Code à compléter pour tester toutes les configurations d'une pièce
+                    if test_coup_legal(plateau, piece, (x, y), id_joueur):
+                        return True
+    return False
