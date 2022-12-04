@@ -11,7 +11,31 @@ def afficher_plateau(plateau):
     """
     for ligne in plateau:
         print(ligne)
-    return
+
+
+def afficher_piece(piece, joueur):
+    """
+    Entree : piece: matrice, joueur: int
+    But : Afficher la piece en couleur dans la console
+    Sortie : None
+    Créateur : Alexandre
+    """
+    affichage = ''
+    for i in range(len(piece)):
+        for j in range(len(piece[i])):
+            if piece[i][j] == 'x':
+                if joueur == 1:
+                    affichage += Back.BLUE + ' 1  ' + Back.RESET
+                elif joueur == 2:
+                    affichage += Back.RED + ' 2  ' + Back.RESET
+                elif joueur == 3:
+                    affichage += Back.GREEN + ' 3  ' + Back.RESET
+                elif joueur == 4:
+                    affichage += Back.YELLOW + ' 4  ' + Back.RESET
+            else:
+                affichage += '    '
+        affichage += '\n'
+    print(affichage)
 
 
 def afficher_plateau_couleur(plateau):
@@ -19,30 +43,20 @@ def afficher_plateau_couleur(plateau):
     Entrée : plateau, une matrice 22x22
     But : Afficher le plateau en couleur dans la console
     Sortie : None
-    Créateur : Valentin
+    Créateurs : Valentin et Romain
     """
+    affichage = Fore.BLACK
     for ligne in plateau:
-        affichage = ''
         for x in ligne:
             if x == '1':
-                affichage = affichage + (Back.BLUE + '1')
-                affichage = affichage + (Back.BLUE + ' ')
-            if x == '2':
-                affichage = affichage + (Back.RED + '2')
-                affichage = affichage + (Back.RED + ' ')
-            if x == '3':
-                affichage = affichage + (Back.GREEN + '3')
-                affichage = affichage + (Back.GREEN + ' ')
-            if x == '4':
-                affichage = affichage + (Back.YELLOW + '4')
-                affichage = affichage + (Back.YELLOW + ' ')
-            if x == ' ':
-                affichage = affichage + (Back.WHITE + " ")
-                affichage = affichage + (Back.WHITE + " ")
-            if x == '':
-                affichage = affichage + (Back.BLACK + '')
-                affichage = affichage + (Back.BLACK + '*')
-        print(affichage)
-    print(Back.RESET)
-    print(Fore.RESET)
-    return
+                affichage += Back.BLUE + ' 1  ' + Back.RESET
+            elif x == '2':
+                affichage += Back.RED + ' 2  ' + Back.RESET
+            elif x == '3':
+                affichage += Back.GREEN + ' 3  ' + Back.RESET
+            elif x == '4':
+                affichage += Back.YELLOW + ' 4  ' + Back.RESET
+            elif x == ' ':
+                affichage += Back.WHITE + '    ' + Back.RESET
+        affichage += '\n'
+    print(affichage + Back.RESET + Fore.RESET)
