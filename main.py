@@ -80,8 +80,8 @@ if __name__ == "__main__":
 
             # Si ce n'est pas la première pièce...
             else:
-                choix_position = input(f"Où voulez vous placer la pièce {piece_choisie_id} ? (ligne colonne) ")
-                [pos_x, pos_y] = [int(x) for x in choix_position.split(' ')]
+                choix_position = input(f"Où voulez vous placer la pièce {piece_choisie_id} ? (colonne ligne) ")
+                [pos_y, pos_x] = [int(x) for x in choix_position.split(' ')]
 
                 coup_legal = jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)
                 if not coup_legal:
