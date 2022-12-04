@@ -6,6 +6,7 @@
 
 
 import dict_pieces
+import affichage
 
 
 def placer_piece(plateau, piece, coord, id_joueur):
@@ -61,26 +62,39 @@ def test_coup_legal(plateau, piece, coord, id_joueur):
     for i in range(hauteur_piece):
         for j in range(largeur_piece):
             if piece[i][j] == 'x':
+                print(i, j)
+                print(x+i, y+j)
                 # Detection d'un bord adjacent de même couleur :
                 if plateau[x + i - 1][y + j] == str(id_joueur):
+                    print(f'Collision en {plateau[x + i - 1][y + j]}')
                     return False
                 if plateau[x + i + 1][y + j] == str(id_joueur):
+                    print(f'Collision en {plateau[x + i + 1][y + j]}')
                     return False
                 if plateau[x + i][y + j - 1] == str(id_joueur):
+                    print(f'Collision en {plateau[x + i][y + j - 1]}')
                     return False
                 if plateau[x + i][y + j + 1] == str(id_joueur):
+                    print(f'Collision en {plateau[x + i][y + j + 1]}')
                     return False
 
                 # Detection d'un coin :
                 if plateau[x + i - 1][y + j - 1] == str(id_joueur):
                     compteur_coin += 1
+                print(f'Coin testé : {(x + i - 1,y + j - 1)}')
+
                 if plateau[x + i + 1][y + j - 1] == str(id_joueur):
                     compteur_coin += 1
+                print(f'Coin testé : {(x + i + 1,y + j - 1)}')
                 if plateau[x + i - 1][y + j + 1] == str(id_joueur):
                     compteur_coin += 1
+                print(f'Coin testé : {(x + i - 1,y + j + 1)}')
                 if plateau[x + i + 1][y + j + 1] == str(id_joueur):
                     compteur_coin += 1
+                print(f'Coin testé : {(x + i + 1,y + j + 1)}')
 
+
+    print(f'coin = {compteur_coin}')
     if compteur_coin > 0:
         return True
 
@@ -103,3 +117,47 @@ def peut_jouer(plateau, dico_joueurs, id_joueur):
                     if test_coup_legal(plateau, piece, (x, y), id_joueur):
                         return True
     return False
+
+
+def initialisation():
+
+    partie = {}
+    print(f'Génération d\'une partie...')
+
+    plateau_init = [['*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*',],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
+['*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*',]]
+    partie['plateau'] = plateau_init
+    affichage.afficher_plateau_couleur(partie['plateau'])
+
+    joueurs = {}
+    for k in range(4):
+        dico_joueur = {'nom': input(f'Saisir le nom du joueur {k+1} : '),
+                       'main': [k for k in range(1, 22)]}
+        joueurs[k+1] = dico_joueur
+    for joueur_id in joueurs.keys():
+        print(f"Joueur {joueur_id} | Nom : {joueurs[joueur_id]['nom']} | main : {joueurs[joueur_id]['main']} ")
+    partie['joueurs'] = joueurs
+
+    partie['joueurs_restants'] = [1, 2, 3, 4]
+
+    return partie

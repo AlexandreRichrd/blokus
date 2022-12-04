@@ -1,6 +1,6 @@
 import numpy as np
 import dict_pieces
-import dict_config
+
 
 
 def generate_config(dict1):
@@ -97,11 +97,11 @@ def afficher_matrix(mat):
       print(mat[i][j], end='')  
     print("")
   
-dict_pieces.dict_config = generate_config(dict_pieces.dict)
+# dict_pieces.dict_config = generate_config(dict_pieces.dict)
 
-afficher_matrix(dict_pieces.dict_config[2][1][0])
+"""afficher_matrix(dict_pieces.dict_config[2][1][0])"""
 
-print('affichage')
+# print('affichage')
 # for i in range(1, len(dict_pieces.dict_config)+1):
 #   print('------------------')
 #   print('Pièce ', i)
@@ -118,9 +118,9 @@ print('affichage')
 #     afficher_matrix(dict_pieces.dict_config[k][1][j])
 #     print('')
 
-while(True):
+"""while(True):
   j = int(input('Piece: '))
   piece = generate_config_piece(dict_pieces.dict[j])
   for i in range (len(piece)):
     print('Config ', i)
-    afficher_matrix(piece[i])
+    afficher_matrix(piece[i])"""
