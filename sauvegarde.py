@@ -3,10 +3,9 @@
 # Lecture d'un fichier de sauvegarde
 
 import time
-import dict_pieces
 
 
-def save(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
+def save(partie):
     """ Entrée : plateau, une matrice 22x22 ; les dictionnaires des joueurs
     But : Ecriture d'un fichier 'blokus_date_heure.txt' contenant le plateau puis les cles des pièces restantes
      des joueurs
@@ -15,9 +14,12 @@ def save(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
     
     # Création du nom du fichier
     date = time.localtime(time.time())
-    nom_fichier = 'blokus_' + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) \
-                  + '_' + str(date.tm_hour) + str(date.tm_min) + '.txt'
-   
+    nom_fichier = 'blokus_' + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) + '_' + str(date.tm_hour) + str(date.tm_min) + '.txt'
+
+    plateau = partie['plateau']
+    joueurs = partie['joueurs']
+    joueurs_restant = partie['joueurs_restants']
+
     fichier = open(nom_fichier, 'w')  # Ouverture du fichier
     
     for lignes in plateau:  # Ecriture dans le fichier du plateau
@@ -28,16 +30,19 @@ def save(plateau, dicoj1, dicoj2, dicoj3, dicoj4):
         fichier.write(ligne)
 
     # Ecriture dans le fichier des dicos des joueurs
-    for dico in [dicoj1, dicoj2, dicoj3, dicoj4]:
-        ligne = ''
-        for k in dico.keys():
-            ligne = ligne + str(k) + ' '
-        ligne = ligne + '\n'
+    for k in range(1, 5):
+        ligne = joueurs[k]['nom']
+        for piece_id in joueurs[k]['main']:
+            ligne += ' ' + str(piece_id)
+        ligne = ligne + ' ' + '\n'
         fichier.write(ligne)
 
-    fichier.close()  # Fermeture du fichier
+    ligne = ''
+    for joueur_restant in joueurs_restant:
+        ligne += str(joueur_restant) + ' '
+    fichier.write(ligne[:-1] + ' ' + '\n')
 
-    return
+    fichier.close()  # Fermeture du fichier
 
 
 def read_save(nom_fichier):
@@ -47,6 +52,8 @@ def read_save(nom_fichier):
     Sortie : une liste [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
     Créateur : Romain
     """
+
+    partie = {}
 
     fichier = open(nom_fichier, 'r')
     plateau = []
@@ -60,17 +67,15 @@ def read_save(nom_fichier):
                 ligne.append(x)
         plateau.append(ligne)
 
-    # Déduction des dictionnaires des joueurs
-    dicoj1, dicoj2, dicoj3, dicoj4 = {}, {}, {}, {}
+    partie['plateau'] = plateau
 
-    for (i, dico) in [(22, dicoj1), (23, dicoj2), (24, dicoj3), (25, dicoj4)]:
-        for cle in lignes[i].split(' '):
-            if cle != '\n':
-                dico[int(cle)] = dict_pieces.dict.get(int(cle))
+    joueurs = {}
+    for k in range(22, 26):
+        datas_joueur = lignes[k].split(" ")[:-1]
+        joueurs[k+1 - 22] = {'nom': datas_joueur[0],
+                        'main': [x for x in datas_joueur[1:]]}
 
-    fichier.close()
+    partie['joueurs'] = joueurs
+    partie['joueurs_restants'] = lignes[26].split(' ')[:-1]
 
-    # Calcul du joueur qui doit jouer
-    j_suivant = max([(1, len(dicoj1)), (2, len(dicoj2)), (3, len(dicoj3)), (4, len(dicoj4))], key=lambda t: t[1])[0]
-
-    return [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
+    return partie
