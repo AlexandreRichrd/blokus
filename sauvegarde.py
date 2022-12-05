@@ -3,6 +3,8 @@
 # Lecture d'un fichier de sauvegarde
 
 import time
+import os
+import jeu
 
 
 def save(partie):
@@ -13,6 +15,8 @@ def save(partie):
     Créateur : Romain """
     
     # Création du nom du fichier
+
+    os.chdir(os.getcwd() + '/sauvegardes')
     date = time.localtime(time.time())
     nom_fichier = 'blokus_' + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) + '_' + str(date.tm_hour) + str(date.tm_min) + '.txt'
 
@@ -52,6 +56,7 @@ def read_save(nom_fichier):
     Sortie : une liste [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
     Créateur : Romain
     """
+    os.chdir(os.getcwd() + '/sauvegardes')
 
     partie = {}
 
@@ -71,9 +76,9 @@ def read_save(nom_fichier):
 
     joueurs = {}
     for k in range(22, 26):
-        datas_joueur = lignes[k].split(" ")[:-1]
+        datas_joueur = lignes[k].split(" ")
         joueurs[k+1 - 22] = {'nom': datas_joueur[0],
-                        'main': [x for x in datas_joueur[1:]]}
+                        'main': [int(x) for x in datas_joueur[1:]]}
 
     partie['joueurs'] = joueurs
     partie['joueurs_restants'] = lignes[26].split(' ')[:-1]

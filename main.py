@@ -2,6 +2,8 @@ import dict_pieces
 import jeu
 import affichage
 import lib
+import sauvegarde
+import os
 
 
 def debug(partie, joueur_a_jouer):
@@ -38,8 +40,15 @@ if __name__ == "__main__":
             partie = jeu.initialisation()
             choix_fait = True
         elif choix == '2':
-            partie = jeu.initialisation()
-            choix_fait = True
+            affichage.menu_sauvegarde_dispos(os.listdir(os.getcwd() + '/sauvegardes'))
+            nom_fichier = input('Quel fichier voulez vous ? ')
+            if nom_fichier not in [nom[:-4] for nom in os.listdir(os.getcwd() + '/sauvegardes')]:
+                print("ATTENTION : Ce n'est pas un nom de fichier valide.\n")
+                choix_fait = False
+
+            else:
+                partie = sauvegarde.read_save(nom_fichier + '.txt')
+                choix_fait = True
         elif choix == '3':
             print('Ciao, bye !')
             choix_fait = True
@@ -130,7 +139,7 @@ if __name__ == "__main__":
                     choix_sauvegarde = True
                 elif sauvegarde_choisie in ['2', 'N']:
                     choix_sauvegarde = True
-                    print("SAUVEGARDE DE LA PARTIE ...")
+                    sauvegarde.save(partie)
                     exit()
 
     print('> Fin de partie - SCORES :')

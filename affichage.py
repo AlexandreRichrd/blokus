@@ -132,4 +132,10 @@ def menu_sauvegarde():
     print('     > 1. Non')
     print('     > 2. Oui')
 
+
+def menu_sauvegarde_dispos(liste):
+    print('> SAUVEGARDE(S) DISPONIBLE(S) :')
+    for k in liste:
+        print(f'    > {k[:-4]}')
+
 # afficher_liste_pieces([dict_pieces.dict[k] for k in range(1, 22)], range(1, 22), 1)
