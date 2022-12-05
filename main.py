@@ -3,29 +3,45 @@ import jeu
 import affichage
 import lib
 
+
+def debug(partie, joueur_a_jouer):
+    print('\n\n\n#########################################################')
+    print('                         DEBUG')
+    print('#########################################################')
+
+    plateau = partie['plateau']
+    joueurs = partie['joueurs']
+    joueurs_r = partie['joueurs_restants']
+
+    affichage.afficher_plateau_couleur(plateau)
+    print(f'Joueurs : {joueurs}')
+    print(f'Joueurs restants : {joueurs_r}')
+
+    print(f"C'est le tour du joueur {joueur_a_jouer}")
+    print('#########################################################\n\n')
+
+
+
+
+
+
 if __name__ == "__main__":
 
-    print('-------------------')
-    print('Jeu du Blokus')
-    print('-------------------')
+    affichage.titre_blokus()
+
     choix_fait = False
     while not choix_fait:
-
-        print('1. Nouvelle partie')
-        print('2. Charger une partie')
-        print('3. Quitter')
-
+        affichage.menu()
         choix = input('Votre choix : ')
         if choix == '1':
-            print('Nouvelle partie')
+            print('\n> Nouvelle partie')
             partie = jeu.initialisation()
             choix_fait = True
         elif choix == '2':
-            print('Chargement d\'une partie')
             partie = jeu.initialisation()
             choix_fait = True
         elif choix == '3':
-            print('Au revoir')
+            print('Ciao, bye !')
             choix_fait = True
             exit()
         else:
@@ -33,19 +49,20 @@ if __name__ == "__main__":
 
     compteur_tour = 1
     joueur_a_jouer = 1
+    print(f"\n> TOUR N° {compteur_tour}")
 
     while len(partie['joueurs_restants']) > 1:
 
         joueur = partie['joueurs'][joueur_a_jouer]
-
-        print(f"C'est au tour de {joueur['nom']} !")
+        print(f"\nC'est au tour du joueur {joueur_a_jouer} : {joueur['nom']} !")
         affichage.afficher_plateau_couleur(partie['plateau'])
 
         # Boucle pour jouer un coup
         coup_legal = False
-        while not coup_legal :
+        while not coup_legal:
             print(f"Voici votre main :")
-            affichage.afficher_liste_pieces([dict_pieces.dict[k] for k in joueur['main']], joueur['main'], joueur_a_jouer)
+            affichage.afficher_liste_pieces([dict_pieces.dict[k] for k in joueur['main']], joueur['main'],
+                                            joueur_a_jouer)
 
             choix_piece = False
             while not choix_piece:
@@ -55,15 +72,15 @@ if __name__ == "__main__":
 
             print(f"Voici les configurations de la pièces {piece_choisie_id} :")
             configurations = lib.generate_config_piece(dict_pieces.dict[piece_choisie_id])
-            affichage.afficher_liste_pieces(configurations, range(1, len(configurations)+1), joueur_a_jouer)
+            affichage.afficher_liste_pieces(configurations, range(1, len(configurations) + 1), joueur_a_jouer)
 
             choix_config = False
             while not choix_config:
                 config_choisie = int(input(f"Que voulez vous joueur ? Numéro : "))
-                if config_choisie in range(1, len(configurations)+1):
+                if config_choisie in range(1, len(configurations) + 1):
                     choix_config = True
 
-            piece_choisie = configurations[config_choisie-1]
+            piece_choisie = configurations[config_choisie - 1]
 
             # Première pièce du joueur
             if len(joueur['main']) == 21:
@@ -75,38 +92,58 @@ if __name__ == "__main__":
                     pos_x, pos_y = 20 - len(piece_choisie[0]) + 1, 20
                 else:
                     pos_x, pos_y = 20 - len(piece_choisie[0]) + 1, 1
+                print(pos_x, pos_y)
                 if piece_choisie[0][0] == 'x':
                     coup_legal = True
 
             # Si ce n'est pas la première pièce...
             else:
+
                 choix_position = input(f"Où voulez vous placer la pièce {piece_choisie_id} ? (colonne ligne) ")
                 [pos_y, pos_x] = [int(x) for x in choix_position.split(' ')]
 
-                coup_legal = jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)
+
+                #print(jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer))
+                #print(jeu.test_chevauchement(partie['plateau'], piece_choisie, (pos_x, pos_y)))
+
+                coup_legal = jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer) and jeu.test_chevauchement(partie['plateau'], piece_choisie, (pos_x, pos_y))
                 if not coup_legal:
                     print(f'Attention ce coup est illégal.')
+                    affichage.afficher_plateau_couleur(partie['plateau'])
 
         jeu.placer_piece(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)
         joueur['main'].remove(piece_choisie_id)
-        affichage.afficher_plateau_couleur(partie['plateau'])
-        #affichage.afficher_plateau(partie['plateau'])
+        # affichage.afficher_plateau(partie['plateau'])
 
-        joueur_a_jouer = (joueur_a_jouer + 1) % 5
-        if joueur_a_jouer == 0:
+        joueur_a_jouer = partie['joueurs_restants'][(joueur_a_jouer + 1) % (len(partie['joueurs_restants'])) - 1]
+
+        if joueur_a_jouer == partie['joueurs_restants'][0]:
             compteur_tour += 1
-            joueur_a_jouer = 1
+
+            print(f"\n> TOUR N° {compteur_tour}")
+
+            choix_sauvegarde = False
+            while not choix_sauvegarde:
+                affichage.menu_sauvegarde()
+                sauvegarde_choisie = input(f"Que voulez vous faire ? ")
+                if sauvegarde_choisie in ['1', 'O', 'Y']:
+                    choix_sauvegarde = True
+                elif sauvegarde_choisie in ['2', 'N']:
+                    choix_sauvegarde = True
+                    print("SAUVEGARDE DE LA PARTIE ...")
+                    exit()
+
+    print('> Fin de partie - SCORES :')
+    scores = jeu.score(partie['plateau'])
+
+    for k in range(4):
+        print(f"    >{k+1}. {partie['joueurs'][scores[k][1]]['nom']} - {scores[k][1]} pts ")
 
 
 
-
-
-
-
-
-
-
-
+"""if not jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer):
+            print(f'le joueur {joueur_a_jouer} est éliminé')
+            partie['joueurs_restants'].remove(joueur_a_jouer)"""
 
 ''' #Attribution des pièces à chaque joueurs
     tailleDico = len(dict_pieces.dict)

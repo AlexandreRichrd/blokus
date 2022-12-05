@@ -104,6 +104,32 @@ def afficher_liste_pieces(liste_piece, liste_piece_id, joueur_id):
     print(affichage_numero + '\n' + affichage)
 
 
-# Test
+def titre_blokus():
+    print(' ____  _      ____  _  ___    _  _____ \n'
+          '|  _ \| |    / __ \| |/ / |  | |/ ____|\n'
+          '| |_) | |   | |  | | \' /| |  | | (___  \n'
+          '|  _ <| |   | |  | |  < | |  | |\___ \\ \n'
+          '| |_) | |___| |__| | . \| |__| |____) |\n'
+          '|____/|______\____/|_|\_\\____/|_____/ )\n')
+
+    '''print('                                                             \n'
+          ' _|_|_|    _|          _|_|    _|    _|  _|    _|    _|_|_|  \n'
+          ' _|    _|  _|        _|    _|  _|  _|    _|    _|  _|        \n'
+          ' _|_|_|    _|        _|    _|  _|_|      _|    _|    _|_|    \n'
+          ' _|    _|  _|        _|    _|  _|  _|    _|    _|        _|  \n'
+          ' _|_|_|    _|_|_|_|    _|_|    _|    _|    _|_|    _|_|_|    \n')'''
+
+
+def menu():
+    print('> MENU PRINCIPAL')
+    print('     > 1. Nouvelle partie')
+    print('     > 2. Charger une partie')
+    print('     > 3. Quitter')
+
+
+def menu_sauvegarde():
+    print('> SAUVEGARDE ?')
+    print('     > 1. Non')
+    print('     > 2. Oui')
 
 # afficher_liste_pieces([dict_pieces.dict[k] for k in range(1, 22)], range(1, 22), 1)
