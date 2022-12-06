@@ -103,7 +103,7 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
 
     pieces_du_joueur = []
 
-    if not liste_piece_id:
+    if len(liste_piece_id) == 0:
         return False
 
     for piece_id in liste_piece_id:
