@@ -8,6 +8,8 @@
 import dict_pieces
 import affichage
 import lib
+from sauvegarde import read_save
+import os
 
 
 def placer_piece(plateau, piece, coord, id_joueur):
@@ -100,7 +102,7 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
     pieces_du_joueur = []
 
     for piece_id in liste_piece_id:
-        config = lib.generate_config_piece(dict_pieces.dict[piece_id])
+        config = lib.generate_config_piece(dict_pieces.dico_ref_pieces[piece_id])
         for piece in config:
             pieces_du_joueur.append(piece)
     for x in range(1, 21):  # Parcours des cases et vérifie si la case est vide
@@ -151,15 +153,15 @@ def initialisation():
     return partie
 
 
-def score(plateau):
+def score(partie):
     """
     Entrée : plateau : une matrice 22x22
     But : Détecter le joueur qui a le score le plus élevé.
     Sortie : Numéro joueur qui a le score le plus élevé.
     Créateurs : Antonin
     """
-
-    score = [[0, k] for k in range(1,5)]
+    plateau = partie['plateau']
+    score = [[-89, k] for k in range(1,5)]
     for i in range(len(plateau)):
         for j in range(len(plateau)):
             if plateau[i][j] == '1':
@@ -171,6 +173,10 @@ def score(plateau):
             elif plateau[i][j] == '4':
                 score[3][0] += 1
 
+    joueurs = partie['joueurs']
+    for k in range(1,5):
+        if len(joueurs[k]['main']) == 0:
+            score[k-1][0] += 15
     score.sort(reverse=True)
 
     return score

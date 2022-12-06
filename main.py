@@ -5,28 +5,6 @@ import lib
 import sauvegarde
 import os
 
-
-def debug(partie, joueur_a_jouer):
-    print('\n\n\n#########################################################')
-    print('                         DEBUG')
-    print('#########################################################')
-
-    plateau = partie['plateau']
-    joueurs = partie['joueurs']
-    joueurs_r = partie['joueurs_restants']
-
-    affichage.afficher_plateau_couleur(plateau)
-    print(f'Joueurs : {joueurs}')
-    print(f'Joueurs restants : {joueurs_r}')
-
-    print(f"C'est le tour du joueur {joueur_a_jouer}")
-    print('#########################################################\n\n')
-
-
-
-
-
-
 if __name__ == "__main__":
 
     affichage.titre_blokus()
@@ -70,7 +48,7 @@ if __name__ == "__main__":
         coup_legal = False
         while not coup_legal:
             print(f"Voici votre main :")
-            affichage.afficher_liste_pieces([dict_pieces.dict[k] for k in joueur['main']], joueur['main'],
+            affichage.afficher_liste_pieces([dict_pieces.dico_ref_pieces[k] for k in joueur['main']], joueur['main'],
                                             joueur_a_jouer)
 
             choix_piece = False
@@ -80,7 +58,7 @@ if __name__ == "__main__":
                     choix_piece = True
 
             print(f"Voici les configurations de la pièces {piece_choisie_id} :")
-            configurations = lib.generate_config_piece(dict_pieces.dict[piece_choisie_id])
+            configurations = lib.generate_config_piece(dict_pieces.dico_ref_pieces[piece_choisie_id])
             affichage.afficher_liste_pieces(configurations, range(1, len(configurations) + 1), joueur_a_jouer)
 
             choix_config = False
@@ -116,6 +94,7 @@ if __name__ == "__main__":
                 #print(jeu.test_chevauchement(partie['plateau'], piece_choisie, (pos_x, pos_y)))
 
                 coup_legal = jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer) and jeu.test_chevauchement(partie['plateau'], piece_choisie, (pos_x, pos_y))
+
                 if not coup_legal:
                     print(f'Attention ce coup est illégal.')
                     affichage.afficher_plateau_couleur(partie['plateau'])
@@ -143,7 +122,7 @@ if __name__ == "__main__":
                     exit()
 
     print('> Fin de partie - SCORES :')
-    scores = jeu.score(partie['plateau'])
+    scores = jeu.score(partie)
 
     for k in range(4):
         print(f"    >{k+1}. {partie['joueurs'][scores[k][1]]['nom']} - {scores[k][1]} pts ")
