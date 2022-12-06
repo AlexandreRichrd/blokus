@@ -80,6 +80,6 @@ def read_save(nom_fichier):
                              'main': [int(x) for x in datas_joueur[1:]]}
 
     partie['joueurs'] = joueurs
-    partie['joueurs_restants'] = lignes[26].split(' ')[:-1]
+    partie['joueurs_restants'] = [int(x) for x in lignes[26].split(' ')[:-1]]
 
     return partie

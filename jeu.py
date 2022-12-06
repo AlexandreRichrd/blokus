@@ -45,7 +45,9 @@ def test_chevauchement(plateau, piece, coord):
     for i in range(hauteur_piece):
         for j in range(largeur_piece):
             if piece[i][j] == 'x':
-                if plateau[x+i][y+j] != ' ':
+                if x + i > 21 or y + j > 21:
+                    return False
+                elif plateau[x+i][y+j] != ' ':
                     return False
     return True
 
@@ -101,6 +103,9 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
 
     pieces_du_joueur = []
 
+    if not liste_piece_id:
+        return False
+
     for piece_id in liste_piece_id:
         config = lib.generate_config_piece(dict_pieces.dico_ref_pieces[piece_id])
         for piece in config:
@@ -109,7 +114,7 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
         for y in range(1, 21):
             if plateau[x][y] == ' ':
                 for piece in pieces_du_joueur:
-                    if test_coup_legal(plateau, piece, (x, y), id_joueur): # and test_chevauchement(plateau, piece, (x,y)):
+                    if test_chevauchement(plateau, piece, (x,y)) and test_coup_legal(plateau, piece, (x, y), id_joueur):
                         return True
     return False
 
@@ -180,3 +185,4 @@ def score(partie):
     scores.sort(reverse=True)
 
     return scores
+
