@@ -161,22 +161,22 @@ def score(partie):
     Créateurs : Antonin
     """
     plateau = partie['plateau']
-    score = [[-89, k] for k in range(1,5)]
+    scores = [[-89, k] for k in range(1, 5)]
     for i in range(len(plateau)):
         for j in range(len(plateau)):
             if plateau[i][j] == '1':
-                score[0][0] += 1
+                scores[0][0] += 1
             elif plateau[i][j] == '2':
-                score[1][0] += 1
+                scores[1][0] += 1
             elif plateau[i][j] == '3':
-                score[2][0] += 1
+                scores[2][0] += 1
             elif plateau[i][j] == '4':
-                score[3][0] += 1
+                scores[3][0] += 1
 
     joueurs = partie['joueurs']
     for k in range(1,5):
         if len(joueurs[k]['main']) == 0:
-            score[k-1][0] += 15
-    score.sort(reverse=True)
+            scores[k - 1][0] += 15
+    scores.sort(reverse=True)
 
-    return score
+    return scores
