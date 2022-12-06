@@ -30,11 +30,11 @@ def afficher_piece(piece, joueur):
                 if joueur == 1:
                     affichage += Back.BLUE + ' 1  ' + Back.RESET
                 elif joueur == 2:
-                    affichage += Back.RED + ' 2  ' + Back.RESET
+                    affichage += Back.YELLOW + ' 2  ' + Back.RESET
                 elif joueur == 3:
-                    affichage += Back.GREEN + ' 3  ' + Back.RESET
+                    affichage += Back.RED + ' 3  ' + Back.RESET
                 elif joueur == 4:
-                    affichage += Back.YELLOW + ' 4  ' + Back.RESET
+                    affichage += Back.GREEN + ' 4  ' + Back.RESET
                 liste_affichage.append(affichage)
             else:
                 affichage += '    '
@@ -60,11 +60,11 @@ def afficher_plateau_couleur(plateau):
             if x == '1':
                 affichage += Back.BLUE + '    ' + Back.RESET
             elif x == '2':
-                affichage += Back.RED + '    ' + Back.RESET
-            elif x == '3':
-                affichage += Back.GREEN + '    ' + Back.RESET
-            elif x == '4':
                 affichage += Back.YELLOW + '    ' + Back.RESET
+            elif x == '3':
+                affichage += Back.RED + '    ' + Back.RESET
+            elif x == '4':
+                affichage += Back.GREEN + '    ' + Back.RESET
             elif x == ' ':
                 affichage += Back.WHITE + '    ' + Back.RESET
         affichage += ' ' + str(compteur) + ' ' * (2 - len(str(compteur))) + '\n'
@@ -91,11 +91,11 @@ def afficher_liste_pieces(liste_piece, liste_piece_id, joueur_id):
                     if joueur_id == 1:
                         affichage += Back.BLUE + '    ' + Back.RESET
                     elif joueur_id == 2:
-                        affichage += Back.RED + '    ' + Back.RESET
-                    elif joueur_id == 3:
-                        affichage += Back.GREEN + '    ' + Back.RESET
-                    elif joueur_id == 4:
                         affichage += Back.YELLOW + '    ' + Back.RESET
+                    elif joueur_id == 3:
+                        affichage += Back.RED + '    ' + Back.RESET
+                    elif joueur_id == 4:
+                        affichage += Back.GREEN + '    ' + Back.RESET
                 else:
                     affichage += '    '
             affichage += '    '
