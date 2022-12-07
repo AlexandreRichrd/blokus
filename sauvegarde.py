@@ -75,7 +75,7 @@ def read_save(nom_fichier):
 
     joueurs = {}
     for k in range(22, 26):
-        datas_joueur = lignes[k].split(" ")
+        datas_joueur = lignes[k][:-1].split(" ")
         joueurs[k+1 - 22] = {'nom': datas_joueur[0],
                              'main': [int(x) for x in datas_joueur[1:]]}
 

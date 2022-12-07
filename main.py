@@ -21,6 +21,7 @@ if __name__ == "__main__":
         elif choix == '2':
             affichage.menu_sauvegarde_dispos(os.listdir(os.getcwd() + '/sauvegardes'))
             nom_fichier = input('Quel fichier voulez vous ? ')
+            joueur_precedent = 4
             if nom_fichier not in [nom[:-4] for nom in os.listdir(os.getcwd() + '/sauvegardes')]:
                 print("ATTENTION : Ce n'est pas un nom de fichier valide.\n")
                 choix_fait = False
@@ -38,13 +39,14 @@ if __name__ == "__main__":
     # variables "globales" de jeu
     compteur_tour = 0
     joueur_a_jouer = 1
-
+    peut_jouer = [True, True, True, True]
+    meme_joueur = False
 # ------ BOUCLE DE JEU ------------------- #
     game = True
     while game:
 
-        # S'il n'y qu'un seul joueur dans la partie, on arrête le jeu
-        if len(partie['joueurs_restants']) == 1:
+        # S'il n'y qu'un seul joueur dans la partie et qu'il ne peut pas jouer, on arrête le jeu
+        if meme_joueur and not peut_jouer[joueur_a_jouer-1]:
             game = False
 
         else:
@@ -56,19 +58,23 @@ if __name__ == "__main__":
                 print(f"\n> TOUR N° {compteur_tour}")
                 choix_sauvegarde = False
                 while not choix_sauvegarde:
-                    affichage.menu_sauvegarde()
-                    sauvegarde_choisie = input(f"Que voulez vous faire ? ")
-                    if sauvegarde_choisie in ['1', 'O', 'Y']:
+                    if compteur_tour == 1:
                         choix_sauvegarde = True
-                    elif sauvegarde_choisie in ['2', 'N']:
-                        choix_sauvegarde = True
-                        sauvegarde.save(partie)
-                        exit()
+                    else:
+                        affichage.menu_sauvegarde()
+                        sauvegarde_choisie = input(f"Que voulez vous faire ? ")
+                        if sauvegarde_choisie in ['1', 'O', 'Y']:
+                            choix_sauvegarde = True
+                        elif sauvegarde_choisie in ['2', 'N']:
+                            choix_sauvegarde = True
+                            sauvegarde.save(partie)
+                            exit()
 
             # DEBUG print(f"joueur {joueur_a_jouer}, main {joueur['main']}\npeut jouer : {jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer)}")
 
             # Si le joueur peut joueur il joue et on passe au suivant
-            if jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer) or len(joueur['main']) == 21:
+            peut_jouer[joueur_a_jouer-1] = peut_jouer[joueur_a_jouer-1] and jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer)
+            if peut_jouer[joueur_a_jouer-1] or len(joueur['main']) == 21:
 
                 print(f"\nC'est au tour du joueur {joueur_a_jouer} : {joueur['nom']} !")
                 affichage.afficher_plateau_couleur(partie['plateau'])
@@ -124,31 +130,19 @@ if __name__ == "__main__":
                             affichage.afficher_plateau_couleur(partie['plateau'])
 
                 jeu.placer_piece(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)  # On place la pièce
+                affichage.afficher_plateau_couleur(partie['plateau'])
                 joueur['main'].remove(piece_choisie_id)  # On enlève la pièce de la main du joueur
 
                 joueur_precedent = joueur_a_jouer
-                joueurs_restants = partie['joueurs_restants']
-                indice_joueur_precedent = joueurs_restants.index(joueur_precedent)
-                print(
-                    f"DEBUG : indice precedent = {indice_joueur_precedent}, liste {joueurs_restants}, -> {len(joueurs_restants)}")
-                if indice_joueur_precedent == len(joueurs_restants) - 1:
-                    joueur_a_jouer = joueurs_restants[0]
-                else:
-                    joueur_a_jouer = joueurs_restants[indice_joueur_precedent + 1]
-
-            # Si le joueur ne peut pas jouer on passe au suivant et on le supprime de la liste
+            # Si le joueur ne peut pas jouer on modifie la liste peut_jouer
             else:
-                joueur_precedent = joueur_a_jouer
-                joueurs_restants = partie['joueurs_restants']
-                indice_joueur_precedent = joueurs_restants.index(joueur_precedent)
-                print(f"DEBUG : indice precedent = {indice_joueur_precedent}, liste {joueurs_restants}, -> {len(joueurs_restants)}")
-                if indice_joueur_precedent == len(joueurs_restants)-1:
-                    joueur_a_jouer = joueurs_restants[0]
-                else:
-                    joueur_a_jouer = joueurs_restants[indice_joueur_precedent+1]
+                peut_jouer[joueur_a_jouer-1] = False
 
-                partie['joueurs_restants'].remove(joueur_precedent)
-                joueur = partie['joueurs'][joueur_a_jouer]
+
+            joueur_a_jouer = joueur_a_jouer % 4 + 1
+
+            if joueur_a_jouer == joueur_precedent:
+                meme_joueur = True
 
     # On compte et affiche les scores
     print('> Fin de partie - SCORES :')
@@ -156,4 +150,4 @@ if __name__ == "__main__":
 
     # Affichage des scores
     for k in range(4):
-        print(f"    >{k+1}. {partie['joueurs'][scores[k][1]]['nom']} - {scores[k][1]} pts ")
+        print(f"    >{k+1}. {partie['joueurs'][scores[k][1]]['nom']} avec {scores[k][0]} pts ")

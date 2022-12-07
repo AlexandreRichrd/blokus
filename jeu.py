@@ -8,6 +8,7 @@
 import dict_pieces
 import affichage
 import lib
+import sauvegarde
 from sauvegarde import read_save
 import os
 
@@ -146,9 +147,9 @@ def initialisation():
 ['*',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
 ['*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*',]]
     partie['plateau'] = plateau_init
-    affichage.afficher_plateau_couleur(partie['plateau'])
 
     joueurs = {}
+    print(f'CREATION DES JOUEURS :')
     for k in range(4):
         dico_joueur = {'nom': input(f'Saisir le nom du joueur {k+1} : '),
                        'main': [k for k in range(1, 22)]}
@@ -181,8 +182,7 @@ def score(partie):
     joueurs = partie['joueurs']
     for k in range(1,5):
         if len(joueurs[k]['main']) == 0:
-            scores[k - 1][0] += 15
+            scores[k - 1][0] = 15
     scores.sort(reverse=True)
 
     return scores
-
