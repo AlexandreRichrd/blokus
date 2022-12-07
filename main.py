@@ -53,7 +53,7 @@ if __name__ == "__main__":
             joueur = partie['joueurs'][joueur_a_jouer]
 
             # Si on démarre un nouveau tour, on propose de sauvegarder
-            if joueur_a_jouer == partie['joueurs_restants'][0]:
+            if joueur_a_jouer == 1:
                 compteur_tour += 1
                 print(f"\n> TOUR N° {compteur_tour}")
                 choix_sauvegarde = False
@@ -69,8 +69,6 @@ if __name__ == "__main__":
                             choix_sauvegarde = True
                             sauvegarde.save(partie)
                             exit()
-
-            # DEBUG print(f"joueur {joueur_a_jouer}, main {joueur['main']}\npeut jouer : {jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer)}")
 
             # Si le joueur peut joueur il joue et on passe au suivant
             peut_jouer[joueur_a_jouer-1] = peut_jouer[joueur_a_jouer-1] and jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer)
@@ -129,6 +127,7 @@ if __name__ == "__main__":
                             print(f'Attention ce coup est illégal.')
                             affichage.afficher_plateau_couleur(partie['plateau'])
 
+                joueur['dernier_coup'] = piece_choisie_id
                 jeu.placer_piece(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)  # On place la pièce
                 affichage.afficher_plateau_couleur(partie['plateau'])
                 joueur['main'].remove(piece_choisie_id)  # On enlève la pièce de la main du joueur
@@ -137,7 +136,6 @@ if __name__ == "__main__":
             # Si le joueur ne peut pas jouer on modifie la liste peut_jouer
             else:
                 peut_jouer[joueur_a_jouer-1] = False
-
 
             joueur_a_jouer = joueur_a_jouer % 4 + 1
 
@@ -150,4 +148,4 @@ if __name__ == "__main__":
 
     # Affichage des scores
     for k in range(4):
-        print(f"    >{k+1}. {partie['joueurs'][scores[k][1]]['nom']} avec {scores[k][0]} pts ")
+        print(f"    > {k+1}. {partie['joueurs'][scores[k][1]]['nom']} avec {scores[k][0]} pts ")

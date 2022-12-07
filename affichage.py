@@ -50,12 +50,13 @@ def afficher_plateau_couleur(plateau):
     Sortie : None
     Créateurs : Valentin et Romain
     """
-    affichage = ''
+    affichage = '   '
     for k in range(1, 21):
         affichage += str(k) + ' ' * (4 - len(str(k)))
     affichage += '\n'
     compteur = 1
     for ligne in plateau[1:21]:
+        affichage += ' ' * (2 - len(str(compteur))) + str(compteur) + ' '
         for x in ligne:
             if x == '1':
                 affichage += Back.BLUE + '    ' + Back.RESET
@@ -69,7 +70,10 @@ def afficher_plateau_couleur(plateau):
                 affichage += Back.WHITE + '    ' + Back.RESET
         affichage += ' ' + str(compteur) + ' ' * (2 - len(str(compteur))) + '\n'
         compteur += 1
-    print(affichage + Back.RESET + Fore.RESET)
+    affichage += '   '
+    for k in range(1, 21):
+        affichage += str(k) + ' ' * (4 - len(str(k)))
+    print(affichage +'\n' + Back.RESET + Fore.RESET)
 
 
 def afficher_liste_pieces(liste_piece, liste_piece_id, joueur_id):

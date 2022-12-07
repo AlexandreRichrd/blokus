@@ -21,7 +21,6 @@ def save(partie):
 
     plateau = partie['plateau']
     joueurs = partie['joueurs']
-    joueurs_restant = partie['joueurs_restants']
 
     fichier = open(nom_fichier, 'w')  # Ouverture du fichier
     
@@ -35,15 +34,11 @@ def save(partie):
     # Ecriture dans le fichier des dicos des joueurs
     for k in range(1, 5):
         ligne = joueurs[k]['nom']
+        ligne += ' ' + str(joueurs[k]['dernier_coup'])
         for piece_id in joueurs[k]['main']:
             ligne += ' ' + str(piece_id)
         ligne = ligne + ' ' + '\n'
         fichier.write(ligne)
-
-    ligne = ''
-    for joueur_restant in joueurs_restant:
-        ligne += str(joueur_restant) + ' '
-    fichier.write(ligne[:-1] + ' ' + '\n')
 
     fichier.close()  # Fermeture du fichier
 
@@ -77,9 +72,9 @@ def read_save(nom_fichier):
     for k in range(22, 26):
         datas_joueur = lignes[k][:-1].split(" ")
         joueurs[k+1 - 22] = {'nom': datas_joueur[0],
-                             'main': [int(x) for x in datas_joueur[1:]]}
+                             'dernier_coup' : int(datas_joueur[1]),
+                             'main': [int(x) for x in datas_joueur[2:]]}
 
     partie['joueurs'] = joueurs
-    partie['joueurs_restants'] = [int(x) for x in lignes[26].split(' ')[:-1]]
 
     return partie
