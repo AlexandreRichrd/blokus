@@ -69,12 +69,13 @@ def read_save(nom_fichier):
     partie['plateau'] = plateau
 
     joueurs = {}
+    compteurs = []
     for k in range(22, 26):
         datas_joueur = lignes[k][:-1].split(" ")
         joueurs[k+1 - 22] = {'nom': datas_joueur[0],
                              'dernier_coup' : int(datas_joueur[1]),
                              'main': [int(x) for x in datas_joueur[2:]]}
-
+        compteurs.append(len(datas_joueur[2:]))
     partie['joueurs'] = joueurs
-
-    return partie
+    compteur = 21 - min(compteurs)
+    return partie, compteur

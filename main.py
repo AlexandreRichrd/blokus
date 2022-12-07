@@ -17,6 +17,7 @@ if __name__ == "__main__":
         if choix == '1':
             print('\n> Nouvelle partie')
             partie = jeu.initialisation()
+            compteur = 0
             choix_fait = True
         elif choix == '2':
             affichage.menu_sauvegarde_dispos(os.listdir(os.getcwd() + '/sauvegardes'))
@@ -27,7 +28,7 @@ if __name__ == "__main__":
                 choix_fait = False
 
             else:
-                partie = sauvegarde.read_save(nom_fichier + '.txt')
+                partie, compteur = sauvegarde.read_save(nom_fichier + '.txt')
                 choix_fait = True
         elif choix == '3':
             print('Ciao, bye !')
@@ -37,7 +38,7 @@ if __name__ == "__main__":
             print(f'\n\nATTENTION : {choix} n\'est pas une entrée valide.')
 
     # variables "globales" de jeu
-    compteur_tour = 0
+    compteur_tour = compteur
     joueur_a_jouer = 1
     peut_jouer = [True, True, True, True]
     meme_joueur = False

@@ -187,5 +187,4 @@ def score(partie):
             else:
                 scores[k - 1][0] = 15
     scores.sort(reverse=True)
-
     return scores
