@@ -1,6 +1,9 @@
-import numpy as np
-import dict_pieces
+"""
+NOM_MODULE : lib.py
+BUT : Permet de calculer les configurations des pièces
+"""
 
+import numpy as np
 
 
 def generate_config(dict1):
@@ -22,7 +25,7 @@ def generate_config(dict1):
           m = rotate_matrix(dict1[i], j+1)
           # print('m: ', m)
           list_combi.append(m)
-        
+
         m = np.flip(dict1[i], 1)
         list_combi.append(m)
         # print('m flip: ', m)
@@ -49,7 +52,7 @@ def generate_config_piece(piece):
   '''
   list_configs = []
   list_configs2 = []
-  
+
   for i in range(4):
     m = rotate_matrix(piece, i+1)
     list_configs.append(m)
@@ -59,7 +62,7 @@ def generate_config_piece(piece):
     m = rotate_matrix(m, i+1)
     list_configs.append(m)
   for k in range(len(list_configs)):
-      list_configs2.append(list_configs[k].tolist())
+    list_configs2.append(list_configs[k].tolist())
   list_configs2.append(piece)
 
   return remove_double(list_configs2)
@@ -84,43 +87,13 @@ def rotate_matrix(matrix, rotnb):
   But: On fait une rotation de la matrice à 90°
   Sortie: La matrice s'est faite retourner
   '''
-  
+
   matrix = np.rot90(matrix, rotnb, (0,1))
   return matrix
 
 
-
-
 def afficher_matrix(mat):
-  for i in range(len(mat)):
-    for j in range(len(mat[i])):
-      print(mat[i][j], end='')  
+    for i in range(len(mat)):
+        for j in range(len(mat[i])):
+            print(mat[i][j], end='')
     print("")
-  
-# dict_pieces.dict_config = generate_config(dict_pieces.dict)
-
-"""afficher_matrix(dict_pieces.dict_config[2][1][0])"""
-
-# print('affichage')
-# for i in range(1, len(dict_pieces.dict_config)+1):
-#   print('------------------')
-#   print('Pièce ', i)
-#   print('------------------')
-#   print('config de base: ')
-#   afficher_matrix(dict_pieces.dict_config[i][0])
-#   for j in range(len(dict_pieces.dict_config[i][1])):
-#     print('Config ', j)
-#     afficher_matrix(dict_pieces.dict_config[i][1][j])
-#     print('')
-# k = 4
-# for j in range(len(dict_pieces.dict_config[k][1])):
-#     print('Config ', k)
-#     afficher_matrix(dict_pieces.dict_config[k][1][j])
-#     print('')
-
-"""while(True):
-  j = int(input('Piece: '))
-  piece = generate_config_piece(dict_pieces.dict[j])
-  for i in range (len(piece)):
-    print('Config ', i)
-    afficher_matrix(piece[i])"""

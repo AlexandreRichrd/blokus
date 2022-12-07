@@ -1,24 +1,21 @@
-# Fonctions appelées dans la boucle principale du jeu
+"""
+NOM_MODULE : jeu.py
+BUT : Fonctions de jeu
+"""
 
-# /!\ A FINIR /!\
-# Compléter la fonction peut joueur pour tester toutes les configurations d'une pièce et non seulement la
-# configuration initiale
-
-
-import dict_pieces
-import affichage
+import ressources
 import lib
-import sauvegarde
-from sauvegarde import read_save
-import os
 
 
 def placer_piece(plateau, piece, coord, id_joueur):
     """
-    Entrée : plateau : une matrice 22x22, piece : la matrice d'une piece, coord : (x,y), id_joueur : entier (1 à 4)
     But : Placer une piece dans la matrice aux coordonnées voulues avec la couleur du joueur correspondante
-    Sortie : le plateau mis à jour
     Créateurs : Romain, Antonin
+    :param plateau: matrice 22x22
+    :param piece: matrice
+    :param coord: (x, y)
+    :param id_joueur: int (1 -> 4)
+    :return: None
     """
 
     nouveau_plateau = plateau
@@ -30,15 +27,16 @@ def placer_piece(plateau, piece, coord, id_joueur):
         for j in range(largeur_piece):
             if piece[i][j] == 'x':
                 nouveau_plateau[x+i][y+j] = str(id_joueur)
-    return nouveau_plateau
 
 
 def test_chevauchement(plateau, piece, coord):
     """
-    Entrée : plateau : matrice 22x22, piece : matrice, coord : tuple (x,y)
     But : vérifier qu'il n'y a pas de piece où le joueur veut placer sa pièce ou qu'on ne sort pas de la grille
-    Sortie : un booléen
-    Créateurs : Antonin, Romain
+    Créateurs : Antonin et Romain
+    :param plateau : matrice 22x22
+    :param piece : matrice
+    :param coord: (x, y) int
+    :return: Booléen
     """
     hauteur_piece = len(piece)
     largeur_piece = len(piece[0])
@@ -46,20 +44,24 @@ def test_chevauchement(plateau, piece, coord):
     for i in range(hauteur_piece):
         for j in range(largeur_piece):
             if piece[i][j] == 'x':
-                if x + i > 21 or y + j > 21:
+                if x + i > 21 or y + j > 21:  # Sortie du plateau
                     return False
-                elif plateau[x+i][y+j] != ' ':
+                elif plateau[x+i][y+j] != ' ':  # Collision
                     return False
     return True
 
 
 def test_coup_legal(plateau, piece, coord, id_joueur):
     """
-    Entrée : plateau : une matrice 22x22, piece : la matrice d'une piece, coord : (x,y), id_joueur : entier (1 à 4).
-    But : Détecter si le joueur fait un coup légal en plaçant sa pièce.
-    Sortie : Booléen.
+    But : Détecter si le joueur fait un coup légal en plaçant sa pièce (coins et côtés)
     Créateurs : Antonin, Romain
+    :param plateau: matrice 22x22
+    :param piece: matrice
+    :param coord: (x, y) int
+    :param id_joueur: int (1 -> 4)
+    :return: Booléen
     """
+
     hauteur_piece = len(piece)
     largeur_piece = len(piece[0])
     x, y = coord[0], coord[1]
@@ -88,6 +90,7 @@ def test_coup_legal(plateau, piece, coord, id_joueur):
                 if plateau[x + i + 1][y + j + 1] == str(id_joueur):
                     compteur_coin += 1
 
+    # Il faut au moins un coin pour que le coup soit valide
     if compteur_coin > 0:
         return True
 
@@ -96,10 +99,13 @@ def test_coup_legal(plateau, piece, coord, id_joueur):
 
 def peut_jouer(plateau, liste_piece_id, id_joueur):
     """
-    Entrée : plateau (matrice 22x22), dico_joueurs (construit comme {1:[1,2,3...], 2:[,]...}), id_joueur : int [1:4]
-    But : Savoir si un joueur peut jouer en parcourant toutes les cases vides du plateau et en essayant les pièces
-    Sortie : Un booléen
+    But : Savoir si un joueur peut jouer en parcourant toutes les cases vides et en essayant toutes les pièces à
+    disposition
     Créateur : Romain
+    :param plateau: matrice 22x22
+    :param liste_piece_id: matrice
+    :param id_joueur: int (1 -> 4)
+    :return: Booléen
     """
 
     pieces_du_joueur = []
@@ -107,46 +113,35 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
     if len(liste_piece_id) == 0:
         return False
 
+    # On génère toutes les configurations de pièces possibles
     for piece_id in liste_piece_id:
-        config = lib.generate_config_piece(dict_pieces.dico_ref_pieces[piece_id])
+        config = lib.generate_config_piece(ressources.dico_ref_pieces[piece_id])
         for piece in config:
             pieces_du_joueur.append(piece)
-    for x in range(1, 21):  # Parcours des cases et vérifie si la case est vide
+
+    # Parcours des cases et vérifie si la case est vide
+    for x in range(1, 21):
         for y in range(1, 21):
             if plateau[x][y] == ' ':
                 for piece in pieces_du_joueur:
-                    if test_chevauchement(plateau, piece, (x,y)) and test_coup_legal(plateau, piece, (x, y), id_joueur):
+                    if test_chevauchement(plateau, piece, (x, y)) and test_coup_legal(plateau, piece, (x, y), id_joueur):
                         return True
     return False
 
 
 def initialisation():
+    """
+    But : Initialiser une partie telle que
+        partie['plateau'] = grille de jeu
+        partie['joueurs'] = dictionnaire des joueurs tel que
+                joueur['nom'] = nom du joueur
+                joueur['main'] = main du joueur
+                joueur['dernier_coup'] = id de la dernière pièce posée
+    Créateur : Romain
+    :return: dict
+    """
 
-    partie = {}
-
-    plateau_init = [['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '*'],
-                    ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*']]
-    partie['plateau'] = plateau_init
+    partie = {'plateau': ressources.plateau_initial}
 
     joueurs = {}
     print(f'CREATION DES JOUEURS :')
@@ -161,11 +156,13 @@ def initialisation():
 
 def score(partie):
     """
-    Entrée : plateau : une matrice 22x22
-    But : Détecter le joueur qui a le score le plus élevé.
-    Sortie : Numéro joueur qui a le score le plus élevé.
-    Créateurs : Antonin
+    But : Calculer le score de chaque joueur à la fin du jeu
+    Créateur : Antonin
+    :param partie : dict
+    :return: liste telle que [(score 1er, id 1er), (score 2eme, id 2eme) ...]
     """
+
+    # Parcours du plateau et on ajoute un pour chaque carré posé
     plateau = partie['plateau']
     scores = [[-89, k] for k in range(1, 5)]
     for i in range(len(plateau)):
@@ -179,6 +176,7 @@ def score(partie):
             elif plateau[i][j] == '4':
                 scores[3][0] += 1
 
+    # Score modifié selon condition
     joueurs = partie['joueurs']
     for k in range(1, 5):
         if len(joueurs[k]['main']) == 0:
@@ -186,5 +184,7 @@ def score(partie):
                 scores[k - 1][0] = 20
             else:
                 scores[k - 1][0] = 15
+
+    # Tri du tableau
     scores.sort(reverse=True)
     return scores

@@ -1,37 +1,41 @@
-# Gestion des fonctions de sauvegarde
-# Écriture d'un fichier de sauvegarde
-# Lecture d'un fichier de sauvegarde
+"""
+NOM_MODULE : sauvegarde.py
+BUT : Sauvegarder les parties et reprendre une partie selon une sauvegarde placées en ../sauvegardes
+"""
 
 import time
 import os
 
 
 def save(partie):
-    """ Entrée : plateau, une matrice 22x22 ; les dictionnaires des joueurs
-    But : Ecriture d'un fichier 'blokus_date_heure.txt' contenant le plateau puis les cles des pièces restantes
-     des joueurs
+    """ Entrée : partie: dict (cf jeu.py)
+    But : Ecriture d'un fichier 'blokus_date_heure.txt' contenant le plateau puis les informations des joueurs
     Sortie : None
     Créateur : Romain """
     
-    # Création du nom du fichier
-
+    # Création du nom du fichier tel que "blokus_YYYYMMDD_HHMM.txt
     os.chdir(os.getcwd() + '/sauvegardes')
     date = time.localtime(time.time())
-    nom_fichier = 'blokus_' + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) + '_' + str(date.tm_hour) + str(date.tm_min) + '.txt'
+    nom_fichier = 'blokus_' \
+                  + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) + '_' \
+                  + str(date.tm_hour) + str(date.tm_min) \
+                  + '.txt'
 
+    # Récupération des informations à sauvegarder
     plateau = partie['plateau']
     joueurs = partie['joueurs']
 
-    fichier = open(nom_fichier, 'w')  # Ouverture du fichier
-    
-    for lignes in plateau:  # Ecriture dans le fichier du plateau
+    fichier = open(nom_fichier, 'w')
+
+    # Ecriture des informations dans le fichier de sauvegarde
+    for lignes in plateau:
         ligne = ''
         for case in lignes:
             ligne = ligne + case
         ligne = ligne + '\n'
         fichier.write(ligne)
 
-    # Ecriture dans le fichier des dicos des joueurs
+    # Ecriture des informations concernant les joueurs comme "Nom Derniere_piece Main"
     for k in range(1, 5):
         ligne = joueurs[k]['nom']
         ligne += ' ' + str(joueurs[k]['dernier_coup'])
@@ -40,23 +44,25 @@ def save(partie):
         ligne = ligne + ' ' + '\n'
         fichier.write(ligne)
 
-    fichier.close()  # Fermeture du fichier
+    # Fermeture du fichier
+    fichier.close()
 
 
 def read_save(nom_fichier):
     """
-    Entrée : nom_fichier, str
-    But : lire le fichier, en déduire le joueur qui doit jouer, les dictionnaires des joueurs, le plateau
-    Sortie : une liste [plateau, dicoj1, dicoj2, dicoj3, dicoj4, j_suivant]
+    Entrée : nom_fichier: str
+    But : lire le fichier et en déduire le dictionnaire de la partie
+    Sortie : partie (dict), compteur (int)
     Créateur : Romain
     """
+
+    # Ouverture du fichier
     os.chdir(os.getcwd() + '/sauvegardes')
+    fichier = open(nom_fichier, 'r')
+    lignes = fichier.readlines()
 
     partie = {}
-
-    fichier = open(nom_fichier, 'r')
     plateau = []
-    lignes = fichier.readlines()
 
     # Déduction du tableau
     for k in range(22):
@@ -65,9 +71,9 @@ def read_save(nom_fichier):
             if x != '\n':
                 ligne.append(x)
         plateau.append(ligne)
-
     partie['plateau'] = plateau
 
+    # Déduction des infos des joueurs
     joueurs = {}
     compteurs = []
     for k in range(22, 26):
@@ -77,5 +83,8 @@ def read_save(nom_fichier):
                              'main': [int(x) for x in datas_joueur[2:]]}
         compteurs.append(len(datas_joueur[2:]))
     partie['joueurs'] = joueurs
+
+    # Déduction du compteur en fonction de la taille de la main des joueurs
     compteur = 21 - min(compteurs)
+
     return partie, compteur

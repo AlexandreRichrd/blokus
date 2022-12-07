@@ -1,4 +1,11 @@
-import dict_pieces
+"""
+main.py
+Boucle principal de jeu
+
+Créateurs: Alexandre et Romain
+"""
+
+import ressources
 import jeu
 import affichage
 import lib
@@ -7,32 +14,39 @@ import os
 
 if __name__ == "__main__":
 
+    #  Affichage blokus ASCII
     affichage.titre_blokus()
 
-# ------- MENU PRINCIPAL ----------------- #
-    choix_fait = False
-    while not choix_fait:
+    # --- MENU PRINCIPAL ---
+    choix_menu_princi = False
+    while not choix_menu_princi:
         affichage.menu()
         choix = input('Votre choix : ')
+
+        # Nouvelle Partie
         if choix == '1':
             print('\n> Nouvelle partie')
             partie = jeu.initialisation()
             compteur = 0
-            choix_fait = True
+            choix_menu_princi = True
+
+        # Sauvegarde
         elif choix == '2':
             affichage.menu_sauvegarde_dispos(os.listdir(os.getcwd() + '/sauvegardes'))
             nom_fichier = input('Quel fichier voulez vous ? ')
             joueur_precedent = 4
+
             if nom_fichier not in [nom[:-4] for nom in os.listdir(os.getcwd() + '/sauvegardes')]:
                 print("ATTENTION : Ce n'est pas un nom de fichier valide.\n")
-                choix_fait = False
+                choix_menu_princi = False
 
             else:
                 partie, compteur = sauvegarde.read_save(nom_fichier + '.txt')
-                choix_fait = True
+                choix_menu_princi = True
+
+        # Quitter
         elif choix == '3':
-            print('Ciao, bye !')
-            choix_fait = True
+            choix_menu_princi = True
             exit()
         else:
             print(f'\n\nATTENTION : {choix} n\'est pas une entrée valide.')
@@ -42,7 +56,8 @@ if __name__ == "__main__":
     joueur_a_jouer = 1
     peut_jouer = [True, True, True, True]
     meme_joueur = False
-# ------ BOUCLE DE JEU ------------------- #
+
+    # --- BOUCLE DE JEU ---
     game = True
     while game:
 
@@ -57,6 +72,7 @@ if __name__ == "__main__":
             if joueur_a_jouer == 1:
                 compteur_tour += 1
                 print(f"\n> TOUR N° {compteur_tour}")
+
                 choix_sauvegarde = False
                 while not choix_sauvegarde:
                     if compteur_tour == 1:
@@ -71,7 +87,7 @@ if __name__ == "__main__":
                             sauvegarde.save(partie)
                             exit()
 
-            # Si le joueur peut joueur il joue et on passe au suivant
+            # Si le joueur peut joueur il joue
             peut_jouer[joueur_a_jouer-1] = peut_jouer[joueur_a_jouer-1] and jeu.peut_jouer(partie['plateau'], joueur['main'], joueur_a_jouer)
             if peut_jouer[joueur_a_jouer-1] or len(joueur['main']) == 21:
 
@@ -82,7 +98,7 @@ if __name__ == "__main__":
                 coup_legal = False
                 while not coup_legal:
                     print(f"Voici votre main :")
-                    affichage.afficher_liste_pieces([dict_pieces.dico_ref_pieces[k] for k in joueur['main']], joueur['main'],
+                    affichage.afficher_liste_pieces([ressources.dico_ref_pieces[k] for k in joueur['main']], joueur['main'],
                                                     joueur_a_jouer)
 
                     choix_piece = False
@@ -92,7 +108,7 @@ if __name__ == "__main__":
                             choix_piece = True
 
                     print(f"Voici les configurations de la pièces {piece_choisie_id} :")
-                    configurations = lib.generate_config_piece(dict_pieces.dico_ref_pieces[piece_choisie_id])
+                    configurations = lib.generate_config_piece(ressources.dico_ref_pieces[piece_choisie_id])
                     affichage.afficher_liste_pieces(configurations, range(1, len(configurations) + 1), joueur_a_jouer)
 
                     choix_config = False
@@ -134,6 +150,7 @@ if __name__ == "__main__":
                 joueur['main'].remove(piece_choisie_id)  # On enlève la pièce de la main du joueur
 
                 joueur_precedent = joueur_a_jouer
+
             # Si le joueur ne peut pas jouer on modifie la liste peut_jouer
             else:
                 peut_jouer[joueur_a_jouer-1] = False
@@ -148,5 +165,5 @@ if __name__ == "__main__":
     scores = jeu.score(partie)
 
     # Affichage des scores
-    for k in range(4):
-        print(f"    > {k+1}. {partie['joueurs'][scores[k][1]]['nom']} avec {scores[k][0]} pts ")
+    affichage.afficher_scores(partie, scores)
+
