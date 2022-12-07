@@ -11,6 +11,12 @@ ou
 
 Si ça ne fonctionne pas regarder la [documentation officielle de pip](https://pip.pypa.io/en/stable/cli/pip_install/).
 
+## Affichage avec les bonnes couleurs
+
+Selon le thème de l'IDE, l'affichage des couleurs peut être trompeur.
+
+L'affichage est correct avec IntelliJ (de base sur Pycharm) ou Material Darker (Plugin Pycharm).
+Liste non exhaustive.
 
 ## Lancer une partie
 
@@ -18,3 +24,4 @@ Si ça ne fonctionne pas regarder la [documentation officielle de pip](https://p
 2. Choisir ce qu'on veut faire:
 - Nouvelle partie : créer un partie vierge
 - Sauvegardes : permet de récupérer une partie sauvegardées. **Rq :** taper le nom du fichier **sans** `.txt` et pas 1, 2, 3 ...
+
