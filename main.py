@@ -126,9 +126,9 @@ if __name__ == "__main__":
                         elif joueur_a_jouer == 2:
                             pos_x, pos_y = 1, 20 - len(piece_choisie[0]) + 1
                         elif joueur_a_jouer == 3:
-                            pos_x, pos_y = 20 - len(piece_choisie[0]) + 1, 20
+                            pos_x, pos_y = (20 - len(piece_choisie) + 1), 20
                         else:
-                            pos_x, pos_y = 20 - len(piece_choisie[0]) + 1, 1
+                            pos_x, pos_y = (20 - len(piece_choisie) + 1), 1
                         if piece_choisie[0][0] == 'x':
                             coup_legal = True
 

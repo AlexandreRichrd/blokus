@@ -26,6 +26,7 @@ def placer_piece(plateau, piece, coord, id_joueur):
     for i in range(hauteur_piece):
         for j in range(largeur_piece):
             if piece[i][j] == 'x':
+                print(x+i, y+j)
                 nouveau_plateau[x+i][y+j] = str(id_joueur)
 
 
