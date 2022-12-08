@@ -126,7 +126,7 @@ if __name__ == "__main__":
                         elif joueur_a_jouer == 2:
                             pos_x, pos_y = 1, 20 - len(piece_choisie[0]) + 1
                         elif joueur_a_jouer == 3:
-                            pos_x, pos_y = (20 - len(piece_choisie) + 1), 20
+                            pos_x, pos_y = (20 - len(piece_choisie) + 1), 20 - len(piece_choisie[0])+1
                         else:
                             pos_x, pos_y = (20 - len(piece_choisie) + 1), 1
                         if piece_choisie[0][0] == 'x':
@@ -153,6 +153,7 @@ if __name__ == "__main__":
 
             # Si le joueur ne peut pas jouer on modifie la liste peut_jouer
             else:
+                print('peut plus jouer', joueur_a_jouer)
                 peut_jouer[joueur_a_jouer-1] = False
 
             joueur_a_jouer = joueur_a_jouer % 4 + 1
