@@ -1,6 +1,7 @@
 """
 NOM_MODULE : lib.py
 BUT : Permet de calculer les configurations des pièces
+CREATEUR : Alexandre
 """
 
 import numpy as np
@@ -38,7 +39,7 @@ def generate_config(dict1):
       elif len(dict1[i]) == 1:
         dict2[i] = (dict1[i], dict1[i])
     # elif i == 4:
-    #   dict2[i] = (dict1[i], [[['x', 'x'], ['x', '']], [['x', ''], ['x', 'x']], [['x', 'x'], ['', 'x']], [['', 'x'], ['x', 'x']]]) 
+    #   dict2[i] = (dict1[i], [[['x', 'x'], ['x', '']], [['x', ''], ['x', 'x']], [['x', 'x'], ['', 'x']], [['', 'x'], ['x', 'x']]])
     # elif i == 9:
     #   print('test')
     #   dict2[i] = (dict1[i], [[['x', 'x', ''], ['', 'x', 'x']], [['', '', 'x'], ['x', 'x', 'x'], ['x', '', '']], [['', 'x', 'x'], ['x', 'x', '']],[['x', '', ''], ['x', 'x', 'x'], ['', '', 'x']]])
