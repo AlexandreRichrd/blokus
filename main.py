@@ -23,16 +23,27 @@ if __name__ == "__main__":
         affichage.menu()
         choix = input('Votre choix : ')
 
-        # Nouvelle Partie
+        # Nouvelle Partie 4 joueurs
         if choix == '1':
-            print('\n> Nouvelle partie')
+            print('\n> Nouvelle partie 4 joueurs')
             partie = jeu.initialisation()
             compteur = 0
             choix_menu_princi = True
+            nbr_joueurs = 4
+
+        # Nouvelle Partie 2 joueurs
+        if choix == '2':
+            print('\n> Nouvelle partie 2 joueurs')
+            partie = jeu.initialisation2j()
+            compteur = 0
+            choix_menu_princi = True
+            nbr_joueurs = 2
 
         # Sauvegarde
-        elif choix == '2':
-            affichage.menu_sauvegarde_dispos(os.listdir(os.getcwd() + '/sauvegardes'))
+        elif choix == '3':
+            parent = os.getcwd()
+            affichage.menu_sauvegarde_dispos(os.listdir(parent + '/sauvegardes'))
+            os.chdir(parent)
             nom_fichier = input('Quel fichier voulez vous ? ')
             joueur_precedent = 4
 
@@ -41,11 +52,11 @@ if __name__ == "__main__":
                 choix_menu_princi = False
 
             else:
-                partie, compteur = sauvegarde.read_save(nom_fichier + '.txt')
+                partie, compteur, nbr_joueurs = sauvegarde.read_save(nom_fichier + '.txt')
                 choix_menu_princi = True
 
         # Quitter
-        elif choix == '3':
+        elif choix == '4':
             choix_menu_princi = True
             exit()
         else:
@@ -168,7 +179,7 @@ if __name__ == "__main__":
 
     # On compte et affiche les scores
     print('> Fin de partie - SCORES :')
-    scores = jeu.score(partie)
+    scores = jeu.score(partie,nbr_joueurs)
 
     # Affichage des scores
     affichage.afficher_scores(partie, scores)

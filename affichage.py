@@ -131,9 +131,10 @@ def menu():
     :return:
     """
     print('> MENU PRINCIPAL')
-    print('     > 1. Nouvelle partie')
-    print('     > 2. Charger une partie')
-    print('     > 3. Quitter')
+    print('     > 1. Nouvelle partie 4 joueurs')
+    print('     > 2. Nouvelle partie 2 joueurs')
+    print('     > 3. Charger une partie')
+    print('     > 4. Quitter')
 
 
 def menu_sauvegarde():

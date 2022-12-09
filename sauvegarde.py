@@ -14,7 +14,8 @@ def save(partie):
     Créateur : Romain """
     
     # Création du nom du fichier tel que "blokus_YYYYMMDD_HHMM.txt
-    os.chdir(os.getcwd() + '/sauvegardes')
+    parent = os.getcwd()
+    os.chdir(parent + '/sauvegardes')
     date = time.localtime(time.time())
     nom_fichier = 'blokus_' \
                   + str(date.tm_year) + str(date.tm_mon) + str(date.tm_mday) + '_' \
@@ -46,6 +47,7 @@ def save(partie):
 
     # Fermeture du fichier
     fichier.close()
+    os.chdir(parent)
 
 
 def read_save(nom_fichier):
@@ -57,7 +59,8 @@ def read_save(nom_fichier):
     """
 
     # Ouverture du fichier
-    os.chdir(os.getcwd() + '/sauvegardes')
+    parent = os.getcwd()
+    os.chdir(parent + '/sauvegardes')
     fichier = open(nom_fichier, 'r')
     lignes = fichier.readlines()
 
@@ -77,7 +80,8 @@ def read_save(nom_fichier):
     joueurs = {}
     compteurs = []
     for k in range(22, 26):
-        datas_joueur = lignes[k][:-1].split(" ")
+        datas_joueur = lignes[k][:-1].split(" ")[:-1]
+        print(datas_joueur)
         joueurs[k+1 - 22] = {'nom': datas_joueur[0],
                              'dernier_coup' : int(datas_joueur[1]),
                              'main': [int(x) for x in datas_joueur[2:]]}
@@ -87,4 +91,13 @@ def read_save(nom_fichier):
     # Déduction du compteur en fonction de la taille de la main des joueurs
     compteur = 21 - min(compteurs)
 
-    return partie, compteur
+    if joueurs[4]['nom'] == joueurs[2]['nom'] and joueurs[1]['nom'] == joueurs[3]['nom']:
+        nbr_joueurs = 2
+    else:
+        nbr_joueurs = 4
+
+    os.chdir(parent)
+
+    return partie, compteur, nbr_joueurs
+
+read_save('blokus_2022129_846.txt')

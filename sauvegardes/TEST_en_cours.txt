@@ -20,7 +20,7 @@
 * 4 4  3 3 2  11 2333*
 *44 4444333111  22  3*
 **********************
-Michel_1 2 1 12
-Michel_2 2 1 3 7 8 12
-Michel_3 10 1 2
-Michel_4 2 1
+Alexandre 2 1 12
+Antonin 2 1 3 7 8 12
+Romain 10 1 2
+Valentin 2 1

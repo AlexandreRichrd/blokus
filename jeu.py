@@ -140,7 +140,7 @@ def initialisation():
                 joueur['main'] = main du joueur
                 joueur['dernier_coup'] = id de la dernière pièce posée
     Créateur : Romain
-    :return: dict
+    :return : dict
     """
 
     partie = {'plateau': ressources.plateau_initial}
@@ -156,7 +156,44 @@ def initialisation():
     return partie
 
 
-def score(partie):
+def initialisation2j():
+    """
+    But : Initialiser une partie pour 2 joueurs telle que
+        partie['plateau'] = grille de jeu
+        partie['joueurs'] = dictionnaire des joueurs tel que
+                joueur['nom'] = nom du joueur
+                joueur['main'] = main du joueur
+                joueur['dernier_coup'] = id de la dernière pièce posée
+    Créateur : Romain
+    :return : dict
+    """
+
+    partie = {'plateau': ressources.plateau_initial}
+
+    joueurs = {}
+    print(f'CREATION DES JOUEURS :')
+
+    nom_j1 = input(f'Saisir le nom du joueur 1 : ')
+    joueurs[1] = {'nom': nom_j1,
+               'main': [k for k in range(1, 22)],
+               'dernier_coup': 0}
+    joueurs[3] = {'nom': nom_j1,
+               'main': [k for k in range(1, 22)],
+               'dernier_coup': 0}
+
+    nom_j2 = input(f'Saisir le nom du joueur 2: ')
+    joueurs[2] = {'nom': nom_j2,
+               'main': [k for k in range(1, 22)],
+               'dernier_coup': 0}
+    joueurs[4] = {'nom': nom_j2,
+               'main': [k for k in range(1, 22)],
+               'dernier_coup': 0}
+
+    partie['joueurs'] = joueurs
+    return partie
+
+
+def score(partie, nbr_joueurs):
     """
     But : Calculer le score de chaque joueur à la fin du jeu
     Créateur : Antonin
@@ -187,6 +224,8 @@ def score(partie):
             else:
                 scores[k - 1][0] = 15
 
+    if nbr_joueurs == 2:
+        scores = [(scores[0][0] + scores[2][0], scores[0][1]), (scores[1][0] + scores[3][0], scores[1][1])]
     # Tri du tableau
     scores.sort(reverse=True)
     return scores
