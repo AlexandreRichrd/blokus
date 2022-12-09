@@ -181,7 +181,7 @@ def initialisation2j():
                'main': [k for k in range(1, 22)],
                'dernier_coup': 0}
 
-    nom_j2 = input(f'Saisir le nom du joueur 2: ')
+    nom_j2 = input(f'Saisir le nom du joueur 2 : ')
     joueurs[2] = {'nom': nom_j2,
                'main': [k for k in range(1, 22)],
                'dernier_coup': 0}

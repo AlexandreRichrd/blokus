@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
     # On compte et affiche les scores
     print('> Fin de partie - SCORES :')
-    scores = jeu.score(partie,nbr_joueurs)
+    scores = jeu.score(partie, nbr_joueurs)
 
     # Affichage des scores
     affichage.afficher_plateau_couleur(partie['plateau'])
