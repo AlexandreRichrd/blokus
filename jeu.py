@@ -112,6 +112,8 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
 
     if len(liste_piece_id) == 0:
         return False
+    if len(liste_piece_id) == 21:
+        return True
 
     # On génère toutes les configurations de pièces possibles
     for piece_id in liste_piece_id:

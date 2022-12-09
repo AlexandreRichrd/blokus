@@ -123,14 +123,20 @@ if __name__ == "__main__":
                     if len(joueur['main']) == 21:
                         if joueur_a_jouer == 1:
                             pos_x, pos_y = 1, 1
+                            if piece_choisie[0][0] == 'x':
+                                coup_legal = True
                         elif joueur_a_jouer == 2:
                             pos_x, pos_y = 1, 20 - len(piece_choisie[0]) + 1
+                            if piece_choisie[0][len(piece_choisie[0])-1] == 'x':
+                                coup_legal = True
                         elif joueur_a_jouer == 3:
                             pos_x, pos_y = (20 - len(piece_choisie) + 1), 20 - len(piece_choisie[0])+1
+                            if piece_choisie[len(piece_choisie)-1][len(piece_choisie[0])-1] == 'x':
+                                coup_legal = True
                         else:
                             pos_x, pos_y = (20 - len(piece_choisie) + 1), 1
-                        if piece_choisie[0][0] == 'x':
-                            coup_legal = True
+                            if piece_choisie[len(piece_choisie)-1][0] == 'x':
+                                coup_legal = True
 
                     # Si ce n'est pas la première pièce...
                     else:
@@ -140,9 +146,9 @@ if __name__ == "__main__":
 
                         coup_legal = jeu.test_coup_legal(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer) and jeu.test_chevauchement(partie['plateau'], piece_choisie, (pos_x, pos_y))
 
-                        if not coup_legal:
-                            print(f'Attention ce coup est illégal.')
-                            affichage.afficher_plateau_couleur(partie['plateau'])
+                    if not coup_legal:
+                        print(f'Attention ce coup est illégal.')
+                        affichage.afficher_plateau_couleur(partie['plateau'])
 
                 joueur['dernier_coup'] = piece_choisie_id
                 jeu.placer_piece(partie['plateau'], piece_choisie, (pos_x, pos_y), joueur_a_jouer)  # On place la pièce
@@ -153,7 +159,6 @@ if __name__ == "__main__":
 
             # Si le joueur ne peut pas jouer on modifie la liste peut_jouer
             else:
-                print('peut plus jouer', joueur_a_jouer)
                 peut_jouer[joueur_a_jouer-1] = False
 
             joueur_a_jouer = joueur_a_jouer % 4 + 1
