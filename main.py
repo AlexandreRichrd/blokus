@@ -182,5 +182,6 @@ if __name__ == "__main__":
     scores = jeu.score(partie,nbr_joueurs)
 
     # Affichage des scores
+    affichage.afficher_plateau_couleur(partie['plateau'])
     affichage.afficher_scores(partie, scores)
 
