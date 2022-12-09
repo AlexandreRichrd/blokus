@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
                     piece_choisie = configurations[config_choisie - 1]
 
-                    # Première pièce du joueur
+                    # Première pièce du joueur, on s'assure du 1er placement
                     if len(joueur['main']) == 21:
                         if joueur_a_jouer == 1:
                             pos_x, pos_y = 1, 1

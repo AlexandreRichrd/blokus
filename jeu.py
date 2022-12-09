@@ -110,9 +110,9 @@ def peut_jouer(plateau, liste_piece_id, id_joueur):
 
     pieces_du_joueur = []
 
-    if len(liste_piece_id) == 0:
+    if len(liste_piece_id) == 0:  # main vide
         return False
-    if len(liste_piece_id) == 21:
+    if len(liste_piece_id) == 21:  # 1er tour
         return True
 
     # On génère toutes les configurations de pièces possibles
